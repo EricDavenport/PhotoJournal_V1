@@ -17,7 +17,13 @@ class SettingsViewController: UITableViewController {
 
     }
     
+  @IBAction func directionButtonPressed(_ sender: UIButton) {
+  }
   
+  @IBAction func backgroundColorChanged(_ sender: UIButton) {
+  }
   
+  @IBAction func saveButtonPressed(_ sender: UIButton) {
+  }
   
 }

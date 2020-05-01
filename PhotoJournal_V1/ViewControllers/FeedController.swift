@@ -26,7 +26,7 @@ class FeedController: UIViewController {
       fatalError("failed to downcast NewEntryViewController")
       
     }
-    
+    newEntryVC.modalPresentationStyle = .fullScreen
     present(newEntryVC, animated: true)
     
   }
@@ -41,6 +41,7 @@ class FeedController: UIViewController {
       fatalError("failed to downcast NewEntryViewController")
       
     }
+//    settingVC.modalPresentationStyle = .fullScreen
     
     present(settingVC, animated: true)
     

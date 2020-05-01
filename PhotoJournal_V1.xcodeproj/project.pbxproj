@@ -18,6 +18,9 @@
 		58AD97C5245C9A1600989C37 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD97C4245C9A1600989C37 /* SettingsViewController.swift */; };
 		58AD97C7245C9A9A00989C37 /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58AD97C6245C9A9A00989C37 /* FeedCell.xib */; };
 		58AD97C9245C9B0800989C37 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD97C8245C9B0800989C37 /* FeedCell.swift */; };
+		58AD97CC245CAAA000989C37 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD97CB245CAAA000989C37 /* FileManager+Extension.swift */; };
+		58AD97CE245CAB9A00989C37 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD97CD245CAB9A00989C37 /* PersistenceHelper.swift */; };
+		58AD97D1245CAFB400989C37 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD97D0245CAFB400989C37 /* Entry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		58AD97C4245C9A1600989C37 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		58AD97C6245C9A9A00989C37 /* FeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
 		58AD97C8245C9B0800989C37 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		58AD97CB245CAAA000989C37 /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		58AD97CD245CAB9A00989C37 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
+		58AD97D0245CAFB400989C37 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				58AD97B9245C7E3100989C37 /* Info.plist */,
+				58AD97CF245CAFA700989C37 /* Model */,
+				58AD97CA245CAA8500989C37 /* DataPersistence */,
 				58AD97C1245C999B00989C37 /* SupportingFiles */,
 				58AD97C0245C997F00989C37 /* ViewControllers */,
 				58AD97BF245C997600989C37 /* Storyboard */,
@@ -104,6 +112,23 @@
 				58AD97B1245C7E2D00989C37 /* PhotoJournal_V1.xcdatamodeld */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		58AD97CA245CAA8500989C37 /* DataPersistence */ = {
+			isa = PBXGroup;
+			children = (
+				58AD97CB245CAAA000989C37 /* FileManager+Extension.swift */,
+				58AD97CD245CAB9A00989C37 /* PersistenceHelper.swift */,
+			);
+			path = DataPersistence;
+			sourceTree = "<group>";
+		};
+		58AD97CF245CAFA700989C37 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				58AD97D0245CAFB400989C37 /* Entry.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,12 +203,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58AD97D1245CAFB400989C37 /* Entry.swift in Sources */,
 				58AD97C9245C9B0800989C37 /* FeedCell.swift in Sources */,
+				58AD97CC245CAAA000989C37 /* FileManager+Extension.swift in Sources */,
 				58AD97C3245C9A0800989C37 /* NewEntryViewController.swift in Sources */,
 				58AD97AD245C7E2D00989C37 /* FeedController.swift in Sources */,
 				58AD97A9245C7E2D00989C37 /* AppDelegate.swift in Sources */,
 				58AD97AB245C7E2D00989C37 /* SceneDelegate.swift in Sources */,
 				58AD97B3245C7E2D00989C37 /* PhotoJournal_V1.xcdatamodeld in Sources */,
+				58AD97CE245CAB9A00989C37 /* PersistenceHelper.swift in Sources */,
 				58AD97C5245C9A1600989C37 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
