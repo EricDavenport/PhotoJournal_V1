@@ -23,7 +23,7 @@ class FeedController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    loadEntries()
+//    loadEntries()
     collectionView.dataSource = self
     collectionView.delegate = self
     collectionView.register(UINib(nibName: "FeedCell", bundle: nil), forCellWithReuseIdentifier: "feedCell")
@@ -33,6 +33,7 @@ class FeedController: UIViewController {
   private func loadEntries() {
     do {
       entries = try dataPersistence.loadEntries()
+      collectionView.reloadData()
       print("Entries count = \(entries.count)")
     } catch {
       print("failed to load enties")
@@ -42,10 +43,10 @@ class FeedController: UIViewController {
   @IBAction func newEntryButtonPressed(_ sender: UIBarButtonItem) {
     let newSB = UIStoryboard(name: "Main", bundle: nil)
     
-    guard let newEntryVC = newSB.instantiateViewController(withIdentifier: "NewEntryViewController") as? NewEntryViewController else {
-      fatalError("failed to downcast NewEntryViewController")
-      
-    }
+    let newEntryVC = newSB.instantiateViewController(identifier: "NewEntryViewController", creator: { (coder) in
+      return NewEntryViewController(coder: coder, image: nil)
+    })
+    
     newEntryVC.modalPresentationStyle = .fullScreen
     present(newEntryVC, animated: true)
     

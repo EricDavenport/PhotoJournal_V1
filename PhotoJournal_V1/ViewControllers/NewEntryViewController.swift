@@ -20,12 +20,25 @@ class NewEntryViewController: UIViewController {
   
   private let dataPersistence = PersistenceHelper(filename: "images.plist")
   
-  public var selectedImage: UIImage? {
+  public var selectedImage: UIImage! {
     didSet {
       print("new image selected")
       newEntryImageView.image = selectedImage
     }
   }
+  
+  
+  // optional init setup
+  init?(coder: NSCoder, image: UIImage?) {
+    self.selectedImage = image
+    super.init(coder: coder)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  
   
   override func viewDidLoad() {
         super.viewDidLoad()

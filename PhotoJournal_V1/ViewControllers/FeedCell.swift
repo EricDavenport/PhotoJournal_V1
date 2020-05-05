@@ -8,21 +8,30 @@
 
 import UIKit
 
-protocol FeedCellDelegaste: AnyObject {
+protocol FeedCellDelegate: AnyObject {
   func editButtonPressed(_ feedCell: FeedCell)
 }
 
 class FeedCell: UICollectionViewCell {
   
-  public var entry: Entry!
+  public var entry: Entry?
   
   @IBOutlet weak var entryImageView: UIImageView!
   
   @IBOutlet weak var entryCommentLabel: UILabel!
   
+//  init?(coder: NSCoder, entry: Entry) {
+//    self.entry = entry
+//    super.init(coder: coder)
+//  }
+//
+//  required init?(coder: NSCoder) {
+//    fatalError("init(coder:) has not been implemented")
+//  }
+  
   override func layoutSubviews() {
     super.layoutSubviews()
-    layer.cornerRadius = 20.0
+    layer.cornerRadius = 40.0
     
   }
   
@@ -35,19 +44,20 @@ class FeedCell: UICollectionViewCell {
   private func openEditScreen() {
     let sb = UIStoryboard(name: "Main", bundle: nil)
     
-    guard let newEntryVC = sb.instantiateViewController(withIdentifier: "NewEntryViewController") as? NewEntryViewController else {
-      fatalError("failed to downcast NewEntryViewController")
-      
-    }
-    guard let image = UIImage(data: entry.imageData) else {
-      print("no image data")
-      return
-    }
+//        guard let image = UIImage(data: entry.imageData) else {
+//      print("no image data")
+//      return
+//    }
+
+    let editVC = sb.instantiateViewController(identifier: "NewEntryViewController", creator: { (coder) in
+      return NewEntryViewController(coder: coder, image: nil)
+    })
+    
     
 //    newEntryVC.selectedImage = image
 //    newEntryVC.
-    newEntryVC.modalPresentationStyle = .fullScreen
-    self.window?.rootViewController?.present(newEntryVC, animated: true)
+    editVC.modalPresentationStyle = .fullScreen
+    self.window?.rootViewController?.present(editVC, animated: true)
     
   }
   
