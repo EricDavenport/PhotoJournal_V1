@@ -20,6 +20,8 @@ class FeedCell: UICollectionViewCell {
   
   @IBOutlet weak var entryCommentLabel: UILabel!
   
+  weak var delegate: FeedCellDelegate?
+  
 //  init?(coder: NSCoder, entry: Entry) {
 //    self.entry = entry
 //    super.init(coder: coder)
@@ -36,8 +38,8 @@ class FeedCell: UICollectionViewCell {
   }
   
   @IBAction func editButtonPressed(_ sender: UIButton) {
-    
-    openEditScreen()
+    delegate?.editButtonPressed(self)
+//    openEditScreen()
     
   }
   

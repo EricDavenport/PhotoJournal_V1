@@ -84,7 +84,7 @@ extension FeedController: UICollectionViewDataSource {
     let entry = entries[indexPath.row]
 //    cell.entryCommentLabel.text = entry.indentifier
     cell.configureCell(entry)
-    
+    cell.delegate = self
     return cell
   }
   
@@ -97,5 +97,39 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     let itemWidth: CGFloat = maxWidth * 0.80
     return CGSize(width: itemWidth, height: itemWidth)
   }
+}
+
+extension FeedController: FeedCellDelegate {
+  func editButtonPressed(_ feedCell: FeedCell) {
+    print("editButtonPressed = delegate connected")
+    
+    guard let indexPath = collectionView.indexPath(for: feedCell) else {
+      return
+    }
+    
+    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (alertAction) in
+      print("delete Pressed")
+      self.deleteEntry(indexPath: indexPath)
+    }
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+    alertController.addAction(deleteAction)
+    alertController.addAction(cancelAction)
+    present(alertController, animated: true)
+    
+  }
+    private func deleteEntry(indexPath: IndexPath) {
+      
+      do {
+        try dataPersistence.deleteEntry(indexPath.row)
+      } catch {
+        print("Deleting Error: \(error)")
+      }
+      entries.remove(at: indexPath.row)
+      collectionView.deleteItems(at: [indexPath])
+    }
+    
+  
+  
 }
 
