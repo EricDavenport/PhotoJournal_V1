@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class NewEntryViewController: UIViewController {
 
@@ -15,9 +16,11 @@ class NewEntryViewController: UIViewController {
   
   private let imagePickerController = UIImagePickerController()
   
+  private var entries = [Entry]()
+  
   private let dataPersistence = PersistenceHelper(filename: "images.plist")
   
-  private var selectedImage: UIImage? {
+  public var selectedImage: UIImage? {
     didSet {
       print("new image selected")
       newEntryImageView.image = selectedImage
@@ -28,11 +31,21 @@ class NewEntryViewController: UIViewController {
         super.viewDidLoad()
     setUpCamera()
     imagePickerController.delegate = self
+    loadEntries()
     }
   
   private func setUpCamera() {
     if !UIImagePickerController.isSourceTypeAvailable(.camera) {
       cameraButton.isEnabled = false
+    }
+  }
+  
+  private func loadEntries() {
+    do {
+      entries = try dataPersistence.loadEntries()
+      print("Entries count = \(entries.count)")
+    } catch {
+      print("failed to load enties")
     }
   }
     
@@ -41,6 +54,13 @@ class NewEntryViewController: UIViewController {
   }
   
   @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+    dismiss(animated: true)
+    if selectedImage != nil {
+    appendToCollection()
+      print("saved to DP")
+    } else {
+      print("nothing to save")
+    }
   }
   
   @IBAction func phtotoLibraryButton(_ sender: UIBarButtonItem) {
@@ -53,6 +73,36 @@ class NewEntryViewController: UIViewController {
     present(imagePickerController, animated: true)
   }
   
+  
+  private func appendToCollection() {
+    
+    guard let image = selectedImage,
+      let imageData = image.jpegData(compressionQuality: 1.0) else {
+        print("image is nil")
+        return
+    }
+    
+    let size = UIScreen.main.bounds.size
+    print("original size = \(image.size)")
+    let rect = AVMakeRect(aspectRatio: image.size, insideRect: CGRect(origin: CGPoint.zero, size: size))
+    
+    let resizedImage = image.resizeImage(to: rect.size.width, height: rect.size.height)
+    print("resized image size = \(resizedImage.size)")
+    guard let resizedImageData = resizedImage.jpegData(compressionQuality: 1.0) else {
+      return
+    }
+    
+    let newEntry = Entry(imageData: resizedImageData, date: Date())
+    entries.insert(newEntry, at: entries.count)
+    
+//    let indexPath = IndexPath(row: 0, section: 0)
+    do {
+      try dataPersistence.createEntry(newEntry)
+      print("photo added to collection")
+    } catch {
+      print("saving error: \(error)")
+    }
+  }
   
   
   

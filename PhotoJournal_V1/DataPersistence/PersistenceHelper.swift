@@ -56,6 +56,7 @@ class PersistenceHelper {
       if let data = FileManager.default.contents(atPath: url.path) {
         do {
           entries = try PropertyListDecoder().decode([Entry].self, from: data)
+          print(entries.count)
         } catch {
           throw DataPersistenceError.decodingError(error)
         }
