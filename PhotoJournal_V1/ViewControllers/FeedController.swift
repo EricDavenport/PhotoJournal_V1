@@ -23,7 +23,6 @@ class FeedController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-//    loadEntries()
     collectionView.dataSource = self
     collectionView.delegate = self
     collectionView.register(UINib(nibName: "FeedCell", bundle: nil), forCellWithReuseIdentifier: "feedCell")
@@ -44,7 +43,7 @@ class FeedController: UIViewController {
     let newSB = UIStoryboard(name: "Main", bundle: nil)
     
     let newEntryVC = newSB.instantiateViewController(identifier: "NewEntryViewController", creator: { (coder) in
-      return NewEntryViewController(coder: coder, image: nil)
+      return NewEntryViewController(coder: coder, entry: nil)
     })
     
     newEntryVC.modalPresentationStyle = .fullScreen
@@ -62,8 +61,8 @@ class FeedController: UIViewController {
       fatalError("failed to downcast NewEntryViewController")
       
     }
-    //    settingVC.modalPresentationStyle = .fullScreen
     
+//    settingVC.modalPresentationStyle = .fullScreen
     present(settingVC, animated: true)
     
   }
@@ -82,7 +81,6 @@ extension FeedController: UICollectionViewDataSource {
     }
     
     let entry = entries[indexPath.row]
-//    cell.entryCommentLabel.text = entry.indentifier
     cell.configureCell(entry)
     cell.delegate = self
     return cell
@@ -108,15 +106,35 @@ extension FeedController: FeedCellDelegate {
     }
     
     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (alertAction) in
+    let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] (alertAction) in
       print("delete Pressed")
-      self.deleteEntry(indexPath: indexPath)
+      self?.deleteEntry(indexPath: indexPath)
     }
+    let editAction = UIAlertAction(title: "Edit", style: .default) { [weak self] (alertAction) in
+      print("Edit button pressed")
+      guard let entry = self?.entries[indexPath.row] else {
+          print("no image data")
+        return
+      }
+      
+      let sb = UIStoryboard(name: "Main", bundle: nil)
+      let editVC = sb.instantiateViewController(identifier: "NewEntryViewController") { (coder) in
+        return NewEntryViewController(coder: coder, entry: entry)
+      }
+      
+      editVC.editEntry = entry
+      editVC.modalPresentationStyle = .fullScreen
+      self?.present(editVC, animated: true)
+    }
+    
+    
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
     alertController.addAction(deleteAction)
+    alertController.addAction(editAction)
     alertController.addAction(cancelAction)
     present(alertController, animated: true)
-    
+
+
   }
     private func deleteEntry(indexPath: IndexPath) {
       

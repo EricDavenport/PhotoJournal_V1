@@ -157,7 +157,10 @@
                     </view>
                     <connections>
                         <outlet property="cameraButton" destination="2Gt-yV-Q8d" id="CZJ-yI-j4n"/>
+                        <outlet property="commentTextField" destination="KcW-um-qHo" id="KmJ-VU-Cdx"/>
                         <outlet property="newEntryImageView" destination="MT9-EO-P3u" id="Zfp-lf-OPZ"/>
+                        <outlet property="photoLibraryButton" destination="81R-6v-9Kg" id="UQs-dD-1Mx"/>
+                        <outlet property="saveButton" destination="u9k-Bb-6qp" id="7cm-gC-9i9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WmQ-Dg-zrl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

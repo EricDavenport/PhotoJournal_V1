@@ -22,15 +22,6 @@ class FeedCell: UICollectionViewCell {
   
   weak var delegate: FeedCellDelegate?
   
-//  init?(coder: NSCoder, entry: Entry) {
-//    self.entry = entry
-//    super.init(coder: coder)
-//  }
-//
-//  required init?(coder: NSCoder) {
-//    fatalError("init(coder:) has not been implemented")
-//  }
-  
   override func layoutSubviews() {
     super.layoutSubviews()
     layer.cornerRadius = 40.0
@@ -39,29 +30,10 @@ class FeedCell: UICollectionViewCell {
   
   @IBAction func editButtonPressed(_ sender: UIButton) {
     delegate?.editButtonPressed(self)
-//    openEditScreen()
     
   }
   
-  private func openEditScreen() {
-    let sb = UIStoryboard(name: "Main", bundle: nil)
-    
-//        guard let image = UIImage(data: entry.imageData) else {
-//      print("no image data")
-//      return
-//    }
 
-    let editVC = sb.instantiateViewController(identifier: "NewEntryViewController", creator: { (coder) in
-      return NewEntryViewController(coder: coder, image: nil)
-    })
-    
-    
-//    newEntryVC.selectedImage = image
-//    newEntryVC.
-    editVC.modalPresentationStyle = .fullScreen
-    self.window?.rootViewController?.present(editVC, animated: true)
-    
-  }
   
   public func configureCell(_ entry: Entry) {
     guard let image = UIImage(data: entry.imageData) else {
@@ -69,7 +41,7 @@ class FeedCell: UICollectionViewCell {
     }
     //    entryImageView.contentMode = .scaleAspectFit
     entryImageView.image = image
-    entryCommentLabel.text = entry.indentifier
+    entryCommentLabel.text = entry.caption
   }
   
   

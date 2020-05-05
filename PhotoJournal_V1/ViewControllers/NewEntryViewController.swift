@@ -10,15 +10,20 @@ import UIKit
 import AVFoundation
 
 class NewEntryViewController: UIViewController {
-
+  
   @IBOutlet weak var newEntryImageView: UIImageView!
   @IBOutlet weak var cameraButton: UIBarButtonItem!
+  @IBOutlet weak var photoLibraryButton: UIBarButtonItem!
+  @IBOutlet weak var commentTextField: UITextField!
+  @IBOutlet weak var saveButton: UIBarButtonItem!
   
   private let imagePickerController = UIImagePickerController()
   
   private var entries = [Entry]()
   
   private let dataPersistence = PersistenceHelper(filename: "images.plist")
+  
+  public var editEntry: Entry?
   
   public var selectedImage: UIImage! {
     didSet {
@@ -27,10 +32,8 @@ class NewEntryViewController: UIViewController {
     }
   }
   
-  
-  // optional init setup
-  init?(coder: NSCoder, image: UIImage?) {
-    self.selectedImage = image
+  init?(coder: NSCoder, entry: Entry?) {
+    self.editEntry = entry
     super.init(coder: coder)
   }
   
@@ -38,14 +41,22 @@ class NewEntryViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  
-  
   override func viewDidLoad() {
-        super.viewDidLoad()
+    super.viewDidLoad()
     setUpCamera()
     imagePickerController.delegate = self
     loadEntries()
+    editPhotoSetup()
+  }
+  
+  private func editPhotoSetup() {
+    if editEntry != nil {
+      guard let entry = editEntry else { return }
+      newEntryImageView.image = UIImage(data: entry.imageData)
+      commentTextField.text = entry.caption
+      saveButton.title = "Update"
     }
+  }
   
   private func setUpCamera() {
     if !UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -61,18 +72,23 @@ class NewEntryViewController: UIViewController {
       print("failed to load enties")
     }
   }
-    
+  
   @IBAction func cancellButtonPressed(_ sender: UIBarButtonItem) {
-    dismiss(animated: true)
+      dismiss(animated: true)
+    
   }
   
   @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
     dismiss(animated: true)
+    if saveButton.title == "Save" {
     if selectedImage != nil {
-    appendToCollection()
+      appendToCollection()
       print("saved to DP")
     } else {
       print("nothing to save")
+    }
+    } else if saveButton.title == "Update" {
+      
     }
   }
   
@@ -90,9 +106,10 @@ class NewEntryViewController: UIViewController {
   private func appendToCollection() {
     
     guard let image = selectedImage,
-      let imageData = image.jpegData(compressionQuality: 1.0) else {
-        print("image is nil")
-        return
+      let caption = commentTextField.text,
+      !caption.isEmpty else {
+      print("image or caption is nil")
+      return
     }
     
     let size = UIScreen.main.bounds.size
@@ -105,10 +122,9 @@ class NewEntryViewController: UIViewController {
       return
     }
     
-    let newEntry = Entry(imageData: resizedImageData, date: Date())
+    let newEntry = Entry(imageData: resizedImageData, date: Date(), caption: caption)
     entries.insert(newEntry, at: entries.count)
     
-//    let indexPath = IndexPath(row: 0, section: 0)
     do {
       try dataPersistence.createEntry(newEntry)
       print("photo added to collection")
@@ -135,5 +151,11 @@ extension NewEntryViewController: UIImagePickerControllerDelegate, UINavigationC
     print("image selected")
     selectedImage = image
     imagePickerController.dismiss(animated: true)
+  }
+}
+
+extension NewEntryViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
   }
 }

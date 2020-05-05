@@ -12,4 +12,5 @@ struct Entry: Codable {
   let imageData: Data
   let date: Date
   let indentifier = UUID().uuidString
+  let caption: String
 }
