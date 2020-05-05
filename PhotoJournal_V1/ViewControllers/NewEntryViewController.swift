@@ -23,7 +23,8 @@ class NewEntryViewController: UIViewController {
   
   private let dataPersistence = PersistenceHelper(filename: "images.plist")
   
-  public var editEntry: Entry?
+  private var editEntry: Entry?
+  private var entryIndex: IndexPath?
   
   public var selectedImage: UIImage! {
     didSet {
@@ -32,8 +33,9 @@ class NewEntryViewController: UIViewController {
     }
   }
   
-  init?(coder: NSCoder, entry: Entry?) {
+  init?(coder: NSCoder, entry: Entry?, indexPath: IndexPath?) {
     self.editEntry = entry
+    self.entryIndex = indexPath
     super.init(coder: coder)
   }
   
@@ -55,6 +57,8 @@ class NewEntryViewController: UIViewController {
       newEntryImageView.image = UIImage(data: entry.imageData)
       commentTextField.text = entry.caption
       saveButton.title = "Update"
+      cameraButton.isEnabled = false
+      photoLibraryButton.isEnabled = false
     }
   }
   
@@ -88,7 +92,14 @@ class NewEntryViewController: UIViewController {
       print("nothing to save")
     }
     } else if saveButton.title == "Update" {
+      guard let newComment = commentTextField.text,
+      let indexPath = entryIndex else { return }
       
+      do {
+      try dataPersistence.editEntry(indexPath, caption: newComment)
+      } catch {
+        print("Unable to update")
+      }
     }
   }
   

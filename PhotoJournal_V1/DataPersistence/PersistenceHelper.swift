@@ -78,5 +78,15 @@ class PersistenceHelper {
     
   }
   
+  public func editEntry(_ entryIndex: IndexPath, caption: String) throws {
+    entries[entryIndex.row].caption = caption
+    
+    do {
+      try save()
+    } catch {
+      throw DataPersistenceError.savingError(error)
+    }
+  }
+  
   
 }

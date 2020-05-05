@@ -43,7 +43,7 @@ class FeedController: UIViewController {
     let newSB = UIStoryboard(name: "Main", bundle: nil)
     
     let newEntryVC = newSB.instantiateViewController(identifier: "NewEntryViewController", creator: { (coder) in
-      return NewEntryViewController(coder: coder, entry: nil)
+      return NewEntryViewController(coder: coder, entry: nil, indexPath: nil)
     })
     
     newEntryVC.modalPresentationStyle = .fullScreen
@@ -119,10 +119,10 @@ extension FeedController: FeedCellDelegate {
       
       let sb = UIStoryboard(name: "Main", bundle: nil)
       let editVC = sb.instantiateViewController(identifier: "NewEntryViewController") { (coder) in
-        return NewEntryViewController(coder: coder, entry: entry)
+        return NewEntryViewController(coder: coder, entry: entry, indexPath: indexPath)
       }
       
-      editVC.editEntry = entry
+//      editVC.editEntry = entry
       editVC.modalPresentationStyle = .fullScreen
       self?.present(editVC, animated: true)
     }
